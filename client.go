@@ -9,8 +9,8 @@ import (
 
 const ErrMsgClient = "failed to create mongodb client"
 
-func GetClient(uri string, log logrus.FieldLogger) *mongo.Client {
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+func GetClient(ctx context.Context, uri string, log logrus.FieldLogger) *mongo.Client {
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
 	if err != nil {
 		log.WithField("error", err).Fatal(ErrMsgClient)
 	}
