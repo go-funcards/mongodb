@@ -3,7 +3,7 @@ package mongodb
 import (
 	"context"
 	"errors"
-	"github.com/sirupsen/logrus"
+	"github.com/rs/zerolog"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/x/mongo/driver/connstring"
 )
@@ -12,10 +12,10 @@ const ErrMsgDatabase = "failed to create mongodb database"
 
 var ErrNoDB = errors.New("database name not found in URI")
 
-func GetDB(ctx context.Context, uri string, log logrus.FieldLogger) *mongo.Database {
+func GetDB(ctx context.Context, uri string, log zerolog.Logger) *mongo.Database {
 	dbName, err := GetDBName(uri)
 	if err != nil {
-		log.WithField("error", err).Fatal(ErrMsgDatabase)
+		log.Fatal().Err(err).Msg(ErrMsgDatabase)
 	}
 
 	return GetClient(ctx, uri, log).Database(dbName)
